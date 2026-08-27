@@ -6,9 +6,13 @@ keep_vars = true
 # account_id = ""
 
 # Enable this if you want to use workers with postgres database
-# compatibility_flags = [ "nodejs_compat" ]
+compatibility_flags = [ "nodejs_compat" ]
 
 [vars]
+
+# Server
+AUTH_SERVER_URL="https://auth.sakuraink.net" # The host url of this auth server
+ENVIRONMENT="prod" # Set to dev in local dev environment
 
 # Information
 COMPANY_LOGO_URL="https://valuemelody.com/logo.svg"
@@ -18,7 +22,7 @@ TERMS_LINK="" # Display a link to your terms on sign-up page
 PRIVACY_POLICY_LINK="" # Display a link to your privacy policy on sign-up page
 
 # System
-SUPPORTED_LOCALES=['en', 'fr'] # There is built-in support for zh as well
+SUPPORTED_LOCALES=['en', 'zh'] # There is built-in support for zh as well
 ENABLE_LOCALE_SELECTOR=true # If there is only one SUPPORTED_LOCALE, the locale selector will be disabled regardless of this setting.
 # EMAIL_PROVIDER_NAME="" # The name of your email provider. Available options are 'smtp', 'sendgrid', 'mailgun', 'brevo', 'resend', 'postmark'
 
@@ -29,7 +33,7 @@ ENABLE_PASSWORD_RESET=true # Please set up your mailer first https://auth.valuem
 ENABLE_NAMES=true
 NAMES_IS_REQUIRED=false
 ENABLE_USER_APP_CONSENT=true
-ENABLE_EMAIL_VERIFICATION=true # Please set up your mailer first https://auth.valuemelody.com/email-provider-setup.html. If true, on user sign-up, the email verification email will be sent.
+ENABLE_EMAIL_VERIFICATION=false # Please set up your mailer first https://auth.valuemelody.com/email-provider-setup.html. If true, on user sign-up, the email verification email will be sent.
 REPLACE_EMAIL_VERIFICATION_WITH_WELCOME_EMAIL=false # If both ENABLE_EMAIL_VERIFICATION and REPLACE_EMAIL_VERIFICATION_WITH_WELCOME_EMAIL are true, on user sign-up, the welcome email will be sent instead of the email verification email.
 ENABLE_ORG=false
 ALLOW_USER_SWITCH_ORG_ON_SIGN_IN=false
@@ -90,13 +94,17 @@ ENABLE_SIGN_IN_LOG=false # Specify whether the user’s sign-in IP (only applica
 
 [[kv_namespaces]]
 binding = "KV"
-id = "7d9be060a7bc48919251b37caa7e1fcd" # Replace with your own KV ID
+id = "8fef6f8a27394e1fb0369872c1e7532e" # Replace with your own KV ID
 
 [[d1_databases]]
 binding = "DB"
-database_name = "melody-auth"
-database_id = "8dc67df2-771d-4e73-9c16-d04341b9740e" # Replace with your own D1 ID
+database_name = "sakuraink_auth"
+database_id = "e7778872-651c-4ea8-9094-ff4842faa54e" # Replace with your own D1 ID
 migrations_dir = "./migrations/sqlite"
+
+[[routes]]
+pattern = "auth.sakuraink.net"
+custom_domain = true
 
 [assets]
 directory = "./dist/static"

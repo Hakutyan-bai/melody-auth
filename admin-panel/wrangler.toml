@@ -5,5 +5,9 @@ compatibility_flags = ["nodejs_compat"]
 
 assets = { directory = ".open-next/assets", binding = "ASSETS" }
 
+[[routes]]
+pattern = "admin.sakuraink.net"
+custom_domain = true
+
 [observability.logs]
 enabled = true
