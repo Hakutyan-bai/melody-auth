@@ -55,6 +55,13 @@ import {
 
 const locale = typeof localStorage !== 'undefined' && localStorage.getItem('Locale')
 
+const DEFAULT_LOCALE = 'zh'
+const UI_LOCALES = ['zh', 'en']
+
+const toSupportedLocale = (l?: string | null): string => (
+  l && UI_LOCALES.includes(l) ? l : DEFAULT_LOCALE
+)
+
 const AuthSetup = ({ children }: PropsWithChildren) => {
   const t = useTranslations()
   const state = useSelector((state: RootState) => state.app)
@@ -66,7 +73,7 @@ const AuthSetup = ({ children }: PropsWithChildren) => {
   } = useAuth()
 
   const handleLogout = () => {
-    logoutRedirect({ postLogoutRedirectUri: `${process.env.NEXT_PUBLIC_CLIENT_URI}/${locale || 'en'}/dashboard` })
+    logoutRedirect({ postLogoutRedirectUri: `${process.env.NEXT_PUBLIC_CLIENT_URI}/${locale || DEFAULT_LOCALE}/dashboard` })
   }
 
   useEffect(
@@ -174,11 +181,11 @@ const LayoutSetup = ({ children } : PropsWithChildren) => {
 
   const supportedLocales = useMemo(
     () => {
-      return process.env.NEXT_PUBLIC_SUPPORTED_LOCALES?.split(',') ?? ['en', 'fr']
+      return process.env.NEXT_PUBLIC_SUPPORTED_LOCALES?.split(',') ?? UI_LOCALES
     },
     [],
   )
-  const otherLocale = locale === 'en' ? 'fr' : 'en'
+  const otherLocale = supportedLocales.find((l) => l !== locale) ?? DEFAULT_LOCALE
 
   useEffect(
     () => {
@@ -450,8 +457,8 @@ const Setup = ({ children } : PropsWithChildren) => {
     [pathname],
   )
 
-  // Get the current locale (or default to 'en')
-  const currentLocale = locale || 'en'
+  // Get the current locale (or default to DEFAULT_LOCALE)
+  const currentLocale = locale || DEFAULT_LOCALE
 
   return (
     <Provider store={store}>
@@ -461,7 +468,7 @@ const Setup = ({ children } : PropsWithChildren) => {
         serverUri={process.env.NEXT_PUBLIC_SERVER_URI ?? ''}
         onLoginSuccess={(attr) => {
           if (attr.locale !== locale) {
-            router.push(`/${attr.locale === 'fr' ? 'fr' : 'en'}${routeTool.Internal.Dashboard}`)
+            router.push(`/${toSupportedLocale(attr.locale)}${routeTool.Internal.Dashboard}`)
           }
         }}
       >
