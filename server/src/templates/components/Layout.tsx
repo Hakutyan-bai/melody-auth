@@ -43,7 +43,7 @@ const Layout = ({
                                     <td align="center">
                                         <img
                                           src="${branding.emailLogoUrl}"
-                                          alt="Melody Auth Logo" style="width: 40px; height: auto; margin-bottom: 20px;"
+                                          alt="Sakuraink Auth Logo" style="width: 40px; height: auto; margin-bottom: 20px;"
                                         >
                                     </td>
                                 </tr>
@@ -57,11 +57,11 @@ const Layout = ({
                                         <p>
                                             ${localeConfig.common.poweredBy[locale]}
                                             <a
-                                              href="https://github.com/ValueMelody/melody-auth"
+                                              href="https://sakuraink.net"
                                               target="_blank"
                                               style="color: #666666;"
                                             >
-                                              Melody Auth
+                                              Sakuraink Auth
                                             </a>
                                         </p>
                                     </td>

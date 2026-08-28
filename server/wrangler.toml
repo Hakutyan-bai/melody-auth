@@ -1,114 +1,188 @@
+# Worker 名称；部署后在 Cloudflare 控制台中以此名称标识服务。
 name = "melody-auth"
+# Workers 兼容日期；用于固定运行时行为，避免平台升级意外改变 API 语义。
 compatibility_date = "2025-01-01"
+# 部署时保留 Cloudflare 控制台中已有、但未写入本文件的环境变量。
 keep_vars = true
 
-# Cloudflare account id, required if your cloudflare account is sharing access with other cloudflare accounts
+# Cloudflare 账户 ID；当当前登录身份可访问多个账户时，用它明确部署目标账户。
 # account_id = ""
 
-# Enable this if you want to use workers with postgres database
+# 启用 Node.js 兼容层；让 Worker 可以使用项目依赖所需的部分 Node.js API。
 compatibility_flags = [ "nodejs_compat" ]
 
+# Worker 普通环境变量；这些值会以非加密变量的形式提供给应用。
 [vars]
 
-# Server
-AUTH_SERVER_URL="https://auth.sakuraink.net" # The host url of this auth server
-ENVIRONMENT="prod" # Set to dev in local dev environment
+# 认证服务器的公开地址；用于生成 OAuth/OIDC 端点、回调地址和页面链接。
+AUTH_SERVER_URL="https://auth.sakuraink.net"
+# 当前运行环境；prod 表示生产环境，本地开发时应设为 dev。
+ENVIRONMENT="prod"
 
-# Information
+# 登录及认证页面显示的公司 Logo 地址。
 COMPANY_LOGO_URL="https://valuemelody.com/logo.svg"
-COMPANY_EMAIL_LOGO_URL="https://valuemelody.com/logo.jpg" # be aware that svg format might not be supported in some email clients
-EMAIL_SENDER_NAME="Melody Auth"
-TERMS_LINK="" # Display a link to your terms on sign-up page
-PRIVACY_POLICY_LINK="" # Display a link to your privacy policy on sign-up page
+# 邮件模板使用的公司 Logo 地址；建议使用 JPG/PNG，因为部分邮件客户端不支持 SVG。
+COMPANY_EMAIL_LOGO_URL="https://valuemelody.com/logo.jpg"
+# 系统邮件中显示的发件人名称。
+EMAIL_SENDER_NAME="Sakuraink Auth"
+# 注册页面展示的服务条款链接；留空时不显示。
+TERMS_LINK=""
+# 注册页面展示的隐私政策链接；留空时不显示。
+PRIVACY_POLICY_LINK=""
 
-# System
-SUPPORTED_LOCALES=['en', 'zh'] # There is built-in support for zh as well
-ENABLE_LOCALE_SELECTOR=true # If there is only one SUPPORTED_LOCALE, the locale selector will be disabled regardless of this setting.
-# EMAIL_PROVIDER_NAME="" # The name of your email provider. Available options are 'smtp', 'sendgrid', 'mailgun', 'brevo', 'resend', 'postmark'
+# 系统允许使用的界面语言列表；列表第一项也是无法匹配语言时的默认语言。
+SUPPORTED_LOCALES=['en', 'zh']
+# 是否显示语言切换器；只配置一种语言时，无论此值为何都会隐藏切换器。
+ENABLE_LOCALE_SELECTOR=true
+# 邮件服务商类型；可选值为 smtp、sendgrid、mailgun、brevo、resend、postmark，留空表示不启用邮件发送。
+EMAIL_PROVIDER_NAME="resend"
+RESEND_SENDER_ADDRESS="no-reply@sakuraink.net"
 
-# Suppression
+# 是否允许用户自行注册新账户。
 ENABLE_SIGN_UP=true
+# 是否允许用户使用邮箱和密码登录。
 ENABLE_PASSWORD_SIGN_IN=true
-ENABLE_PASSWORD_RESET=true # Please set up your mailer first https://auth.valuemelody.com/email-provider-setup.html
+# 是否允许用户通过邮件验证码重置密码；启用前需要先配置邮件服务商。
+ENABLE_PASSWORD_RESET=true
+# 是否在用户资料及注册流程中启用名字字段。
 ENABLE_NAMES=true
+# 名字字段是否为必填项；仅在 ENABLE_NAMES=true 时生效。
 NAMES_IS_REQUIRED=false
+# 是否在应用首次申请权限时向用户显示授权同意页面。
 ENABLE_USER_APP_CONSENT=true
-ENABLE_EMAIL_VERIFICATION=false # Please set up your mailer first https://auth.valuemelody.com/email-provider-setup.html. If true, on user sign-up, the email verification email will be sent.
-REPLACE_EMAIL_VERIFICATION_WITH_WELCOME_EMAIL=false # If both ENABLE_EMAIL_VERIFICATION and REPLACE_EMAIL_VERIFICATION_WITH_WELCOME_EMAIL are true, on user sign-up, the welcome email will be sent instead of the email verification email.
+# 是否要求新用户验证邮箱；启用后注册时会发送验证邮件，因此需要邮件服务商。
+ENABLE_EMAIL_VERIFICATION=false
+# 是否用欢迎邮件替代邮箱验证邮件；仅在 ENABLE_EMAIL_VERIFICATION=true 时生效。
+REPLACE_EMAIL_VERIFICATION_WITH_WELCOME_EMAIL=false
+# 是否启用组织（Organization）多租户功能。
 ENABLE_ORG=false
+# 是否允许用户在登录过程中切换所属组织；需要先启用组织功能。
 ALLOW_USER_SWITCH_ORG_ON_SIGN_IN=false
+# 是否启用自定义用户属性功能。
 ENABLE_USER_ATTRIBUTE=false
-BLOCKED_POLICIES=["change_org"] # A list of policy names that should be blocked (change_password, change_email, reset_mfa, manage_passkey, update_info, change_org), preventing end users from triggering them
-ENABLE_PASSWORDLESS_SIGN_IN=false # Please set up your mailer first https://auth.valuemelody.com/email-provider-setup.html. Setting this option to true will automatically override ENABLE_SIGN_UP, ENABLE_PASSWORD_SIGN_IN, ENABLE_PASSWORD_RESET, ALLOW_PASSKEY_ENROLLMENT, ENABLE_RECOVERY_CODE to false. Also, make sure to disable email MFA in order to use this feature.
-# USE_PASSWORDLESS_AS_MAGIC_LINK=false # If true and ENABLE_PASSWORDLESS_SIGN_IN is true, the passwordless sign-in email will contain a magic link. Clicking the link will automatically sign the user in without requiring them to manually enter the OTP code.
-EMBEDDED_AUTH_ORIGINS=[] # List of origins that are allowed to use embedded auth APIs.
-ENABLE_SAML_SSO_AS_SP=false # Experimental feature, only support in Node.js environment
-ENABLE_APP_BANNER=false # Enable the feature for displaying banners on the sign-in page of apps
+# 禁止终端用户主动执行的身份策略列表；可包含 change_password、change_email、reset_mfa、manage_passkey、update_info、change_org。
+BLOCKED_POLICIES=["change_org"]
+# 是否启用无密码登录；启用后会关闭注册、密码登录、密码重置、通行密钥注册和恢复码，并且需要邮件服务商。
+ENABLE_PASSWORDLESS_SIGN_IN=false
+# 无密码登录是否直接发送可点击的魔法链接；为 false 时发送需要手动输入的验证码。
+# USE_PASSWORDLESS_AS_MAGIC_LINK=false
+# 允许调用嵌入式认证 API 的前端 Origin 白名单，例如 ["https://example.com"]；空数组表示不允许任何来源。
+EMBEDDED_AUTH_ORIGINS=[]
+# 是否以服务提供方（SP）身份启用 SAML SSO；该实验功能目前仅支持 Node.js 运行环境。
+ENABLE_SAML_SSO_AS_SP=false
+# 是否允许在应用登录页面显示后台配置的公告横幅。
+ENABLE_APP_BANNER=false
 
-# Auth
+# OAuth 授权码有效期，单位为秒。
 AUTHORIZATION_CODE_EXPIRES_IN=300
+# SPA 访问令牌有效期，单位为秒。
 SPA_ACCESS_TOKEN_EXPIRES_IN=1800
+# SPA 刷新令牌有效期，单位为秒。
 SPA_REFRESH_TOKEN_EXPIRES_IN=604800
+# 服务到服务（S2S）访问令牌有效期，单位为秒。
 S2S_ACCESS_TOKEN_EXPIRES_IN=3600
+# OpenID Connect ID Token 有效期，单位为秒。
 ID_TOKEN_EXPIRES_IN=1800
-SERVER_SESSION_EXPIRES_IN=1800 # Set to 0 to disable session
+# 服务端登录会话有效期，单位为秒；设为 0 可禁用服务端会话。
+SERVER_SESSION_EXPIRES_IN=1800
 
-# MFA
+# 是否强制所有用户使用一次性密码（OTP）多因素认证。
 OTP_MFA_IS_REQUIRED=false
-EMAIL_MFA_IS_REQUIRED=false # Please set up your mailer first https://auth.valuemelody.com/email-provider-setup.html
-SMS_MFA_IS_REQUIRED=false # Please set up your sms provider first https://auth.valuemelody.com/sms-provider-setup.html
-ENFORCE_ONE_MFA_ENROLLMENT=['otp', 'email'] # Enforce one MFA type from the list. Available options are ‘email’, ‘otp’, and ‘sms’. This setting is only effective if OTP_MFA_IS_REQUIRED, SMS_MFA_IS_REQUIRED, and EMAIL_MFA_IS_REQUIRED are all set to false. An empty list means no MFA type will be enforced. You must enable email functionality for the email MFA option to work.
+# 是否强制所有用户使用邮箱多因素认证；启用前需要先配置邮件服务商。
+EMAIL_MFA_IS_REQUIRED=false
+# 是否强制所有用户使用短信多因素认证；启用前需要先配置短信服务商。
+SMS_MFA_IS_REQUIRED=false
+# 当所有 MFA 强制项均为 false 时，要求用户至少注册列表中的一种 MFA；可选 email、otp、sms，空数组表示不强制注册。
+ENFORCE_ONE_MFA_ENROLLMENT=['otp', 'email']
+# 是否允许把邮箱验证码作为其他 MFA 方式不可用时的备用验证手段。
 ALLOW_EMAIL_MFA_AS_BACKUP=true
-# 通行密钥
+# 是否允许用户注册和使用 WebAuthn 通行密钥（Passkey）。
 ALLOW_PASSKEY_ENROLLMENT=true
+# 是否允许用户生成并使用 MFA 恢复码。
 ENABLE_RECOVERY_CODE=false
-ENABLE_MFA_REMEMBER_DEVICE=false # If true, the user can bypass MFA by remembering the device for 30 days.
+# 是否允许用户记住当前设备，从而在 30 天内跳过 MFA 验证。
+ENABLE_MFA_REMEMBER_DEVICE=false
 
-# Brute-force
+# 用户通过密码重置成功修改密码后，是否同时解除账户锁定。
 UNLOCK_ACCOUNT_VIA_PASSWORD_RESET=true
-PASSWORD_RESET_EMAIL_THRESHOLD=5 # Maximum number of password reset email requests allowed per day for a single email address based on ip address. 0 means no restriction.
-PASSWORD_RESET_CODE_THRESHOLD=5 # Number of failed password reset code verification attempts before further attempts are temporarily locked for the user/IP. 0 means no restriction.
-ACCOUNT_LOCKOUT_THRESHOLD=5 # Number of failed login attempts before the user account is locked. 0 means no restriction.
-EMAIL_MFA_EMAIL_THRESHOLD=10 # Maximum number of Email MFA email requests allowed per 30 minutes for a single account based on ip address. 0 means no restriction.
-CHANGE_EMAIL_EMAIL_THRESHOLD=5 # Maximum number of change email verification code requests allowed per 30 minutes for a single account. 0 means no restriction.
-CHANGE_EMAIL_CODE_THRESHOLD=5 # Number of failed change email code verification attempts before further attempts are temporarily locked for the user/IP. 0 means no restriction.
-EMAIL_VERIFICATION_CODE_THRESHOLD=5 # Number of failed email verification code attempts before further attempts are temporarily locked for the user/IP for 30 minutes. 0 means no restriction.
-ACCOUNT_LOCKOUT_EXPIRES_IN=86400 # Set to 0 for indefinite lockout until manual intervention.
-SMS_MFA_MESSAGE_THRESHOLD=5 # Maximum number of SMS MFA message requests allowed per 30 minutes for a single account based on ip address. 0 means no restriction.
-MFA_CODE_VERIFY_THRESHOLD=10 # Number of failed MFA code verification attempts (email/sms/otp/passwordless combined) before further attempts are temporarily locked for the user/IP for 30 minutes. 0 means no restriction.
-# AUTH_CODE_VERIFIER_THRESHOLD=5 # Number of failed auth code exchange attempts with an invalid code_verifier before further attempts are temporarily locked for the user/IP for 30 minutes. 0 or unset means no restriction. Unknown auth codes are not counted.
+# 同一邮箱地址每天按 IP 允许发送的密码重置邮件次数；设为 0 表示不限制。
+PASSWORD_RESET_EMAIL_THRESHOLD=5
+# 密码重置验证码连续验证失败多少次后临时锁定用户/IP；设为 0 表示不限制。
+PASSWORD_RESET_CODE_THRESHOLD=5
+# 连续登录失败多少次后锁定账户；设为 0 表示不启用账户锁定。
+ACCOUNT_LOCKOUT_THRESHOLD=5
+# 同一账户每 30 分钟按 IP 允许发送的邮箱 MFA 邮件次数；设为 0 表示不限制。
+EMAIL_MFA_EMAIL_THRESHOLD=10
+# 同一账户每 30 分钟允许发送的更换邮箱验证码邮件次数；设为 0 表示不限制。
+CHANGE_EMAIL_EMAIL_THRESHOLD=5
+# 更换邮箱验证码连续验证失败多少次后临时锁定用户/IP；设为 0 表示不限制。
+CHANGE_EMAIL_CODE_THRESHOLD=5
+# 邮箱验证验证码连续失败多少次后将用户/IP 锁定 30 分钟；设为 0 表示不限制。
+EMAIL_VERIFICATION_CODE_THRESHOLD=5
+# 账户锁定持续时间，单位为秒；设为 0 表示永久锁定，直到管理员手动处理。
+ACCOUNT_LOCKOUT_EXPIRES_IN=86400
+# 同一账户每 30 分钟按 IP 允许发送的短信 MFA 消息次数；设为 0 表示不限制。
+SMS_MFA_MESSAGE_THRESHOLD=5
+# 邮箱、短信、OTP 和无密码验证码累计失败多少次后将用户/IP 锁定 30 分钟；设为 0 表示不限制。
+MFA_CODE_VERIFY_THRESHOLD=10
+# 使用错误 code_verifier 交换授权码失败多少次后将用户/IP 锁定 30 分钟；设为 0 或不配置表示不限制，未知授权码不计数。
+# AUTH_CODE_VERIFIER_THRESHOLD=5
 
-# Social Sign-in
-GOOGLE_AUTH_CLIENT_ID="349106057196-milff8k0s55g5g4i2pfq435k35tfgjdk.apps.googleusercontent.com" # Google Sign-in will be suppressed if it is empty
-# FACEBOOK_AUTH_CLIENT_ID="" # Facebook Sign-in In will be suppressed if it is empty. When enable, you also need to set FACEBOOK_AUTH_CLIENT_SECRET in .dev.vars for Cloudflare development and Node environments, and in workers config for Cloudflare production environments.
-# GITHUB_AUTH_CLIENT_ID="" # GitHub Sign-in In will be suppressed if it is empty. When enable, you also need to set GITHUB_AUTH_CLIENT_SECRET in .dev.vars for Cloudflare development and Node environments, and in workers config for Cloudflare production environments.
-# GITHUB_AUTH_APP_NAME="" # GitHub Sign-in In will be suppressed if it is empty. When enable, you also need to set GITHUB_AUTH_CLIENT_SECRET in .dev.vars for Cloudflare development and Node environments, and in workers config for Cloudflare production environments.
-# DISCORD_AUTH_CLIENT_ID="" # Discord Sign-in In will be suppressed if it is empty. When enable, you also need to set DISCORD_AUTH_CLIENT_SECRET in .dev.vars for Cloudflare development and Node environments, and in workers config for Cloudflare production environments.
-# APPLE_AUTH_CLIENT_ID="" # Apple Sign-in In will be suppressed if it is empty. When enable, you also need to set APPLE_AUTH_CLIENT_SECRET in .dev.vars for Cloudflare development and Node environments, and in workers config for Cloudflare production environments.
-# OIDC_AUTH_PROVIDERS=[] # List of OIDC authentication providers for users to sign in with. Once a provider's name is set, it should remain unchanged. The provider must supports standard OAuth 2.0 IdToken exchange with PKCE and JWKS endpoint. Example: ['Auth0', 'Azure']. You must set the configurations for each of your OIDC_AUTH_PROVIDERS in src/configs/variable.ts file accordingly.
+# Google OAuth 客户端 ID；留空或注释后隐藏 Google 登录入口。
+GOOGLE_AUTH_CLIENT_ID="349106057196-milff8k0s55g5g4i2pfq435k35tfgjdk.apps.googleusercontent.com"
+# Facebook OAuth 客户端 ID；启用时还需把 FACEBOOK_AUTH_CLIENT_SECRET 配置为 Worker Secret。
+# FACEBOOK_AUTH_CLIENT_ID=""
+# GitHub OAuth 客户端 ID；启用时还需把 GITHUB_AUTH_CLIENT_SECRET 配置为 Worker Secret。
+# GITHUB_AUTH_CLIENT_ID=""
+# GitHub OAuth 应用名称；用于 GitHub 登录流程，需与客户端 ID 和 Secret 一同配置。
+# GITHUB_AUTH_APP_NAME=""
+# Discord OAuth 客户端 ID；启用时还需把 DISCORD_AUTH_CLIENT_SECRET 配置为 Worker Secret。
+# DISCORD_AUTH_CLIENT_ID=""
+# Apple OAuth 客户端 ID；启用时还需把 APPLE_AUTH_CLIENT_SECRET 配置为 Worker Secret。
+# APPLE_AUTH_CLIENT_ID=""
+# 启用的通用 OIDC 服务商名称列表；服务商必须支持 PKCE、ID Token 和 JWKS，并在 src/configs/variable.ts 中配置对应端点。
+# OIDC_AUTH_PROVIDERS=[]
 
-# Log
-LOG_LEVEL="silent" # Set the log level to silent, info, warn, or error. If environment is set to dev, the log level always defaults to info, regardless of this value.
-ENABLE_EMAIL_LOG=false # Specify whether email should be logged. If enabled, ensure that you implement your own email log cleanup scheduler.
-ENABLE_SMS_LOG=false # Specify whether SMS should be logged. If enabled, ensure that you implement your own SMS log cleanup scheduler
-ENABLE_SIGN_IN_LOG=false # Specify whether the user’s sign-in IP (only applicable in production environments) and location details (only applicable in Cloudflare environments) should be logged. If enabled, ensure that you implement your own sign-in log cleanup scheduler, clearly disclose the collection of IP and location data in your privacy policy, and comply with all relevant legal requirements.
+# 应用日志级别；可选 silent、info、warn、error，开发环境始终使用 info。
+LOG_LEVEL="silent"
+# 是否记录邮件发送日志；启用后需要自行设置日志清理任务。
+ENABLE_EMAIL_LOG=false
+# 是否记录短信发送日志；启用后需要自行设置日志清理任务。
+ENABLE_SMS_LOG=false
+# 是否记录登录 IP 和位置信息；启用后需要设置清理任务、在隐私政策中披露并遵守相关法律要求。
+ENABLE_SIGN_IN_LOG=false
 
+# 声明 Worker 使用的 KV 命名空间绑定。
 [[kv_namespaces]]
+# 应用代码访问该 KV 命名空间时使用的变量名。
 binding = "KV"
-id = "8fef6f8a27394e1fb0369872c1e7532e" # Replace with your own KV ID
+# 绑定的 Cloudflare KV 命名空间 ID。
+id = "8fef6f8a27394e1fb0369872c1e7532e"
 
+# 声明 Worker 使用的 D1 数据库绑定。
 [[d1_databases]]
+# 应用代码访问该 D1 数据库时使用的变量名。
 binding = "DB"
+# Cloudflare 控制台中该 D1 数据库的名称。
 database_name = "sakuraink_auth"
-database_id = "e7778872-651c-4ea8-9094-ff4842faa54e" # Replace with your own D1 ID
+# 绑定的 Cloudflare D1 数据库 ID。
+database_id = "e7778872-651c-4ea8-9094-ff4842faa54e"
+# Wrangler 查找并执行 D1 数据库迁移文件的目录。
 migrations_dir = "./migrations/sqlite"
 
+# 声明 Worker 的访问路由。
 [[routes]]
+# 将此域名的请求路由到当前 Worker。
 pattern = "auth.sakuraink.net"
+# 把 pattern 视为 Cloudflare Workers 自定义域名，而不是普通路由表达式。
 custom_domain = true
 
+# 配置随 Worker 一起发布的静态资源。
 [assets]
+# 静态资源构建产物目录；目录内容会在部署时上传并由 Worker 提供服务。
 directory = "./dist/static"
 
+# 配置 Worker 的可观测性功能。
 [observability]
-enabled = false # Set to true to enable Cloudflare workers logs. https://developers.cloudflare.com/workers/observability/logs/workers-logs/
+# 是否启用 Cloudflare Workers Logs；启用后可在控制台查看 Worker 运行日志。
+enabled = false
