@@ -59,7 +59,8 @@ EMAIL_MFA_IS_REQUIRED=false # Please set up your mailer first https://auth.value
 SMS_MFA_IS_REQUIRED=false # Please set up your sms provider first https://auth.valuemelody.com/sms-provider-setup.html
 ENFORCE_ONE_MFA_ENROLLMENT=['otp', 'email'] # Enforce one MFA type from the list. Available options are ‘email’, ‘otp’, and ‘sms’. This setting is only effective if OTP_MFA_IS_REQUIRED, SMS_MFA_IS_REQUIRED, and EMAIL_MFA_IS_REQUIRED are all set to false. An empty list means no MFA type will be enforced. You must enable email functionality for the email MFA option to work.
 ALLOW_EMAIL_MFA_AS_BACKUP=true
-ALLOW_PASSKEY_ENROLLMENT=false
+# 通行密钥
+ALLOW_PASSKEY_ENROLLMENT=true
 ENABLE_RECOVERY_CODE=false
 ENABLE_MFA_REMEMBER_DEVICE=false # If true, the user can bypass MFA by remembering the device for 30 days.
 
@@ -78,7 +79,7 @@ MFA_CODE_VERIFY_THRESHOLD=10 # Number of failed MFA code verification attempts (
 # AUTH_CODE_VERIFIER_THRESHOLD=5 # Number of failed auth code exchange attempts with an invalid code_verifier before further attempts are temporarily locked for the user/IP for 30 minutes. 0 or unset means no restriction. Unknown auth codes are not counted.
 
 # Social Sign-in
-# GOOGLE_AUTH_CLIENT_ID="" # Google Sign-in will be suppressed if it is empty
+GOOGLE_AUTH_CLIENT_ID="349106057196-milff8k0s55g5g4i2pfq435k35tfgjdk.apps.googleusercontent.com" # Google Sign-in will be suppressed if it is empty
 # FACEBOOK_AUTH_CLIENT_ID="" # Facebook Sign-in In will be suppressed if it is empty. When enable, you also need to set FACEBOOK_AUTH_CLIENT_SECRET in .dev.vars for Cloudflare development and Node environments, and in workers config for Cloudflare production environments.
 # GITHUB_AUTH_CLIENT_ID="" # GitHub Sign-in In will be suppressed if it is empty. When enable, you also need to set GITHUB_AUTH_CLIENT_SECRET in .dev.vars for Cloudflare development and Node environments, and in workers config for Cloudflare production environments.
 # GITHUB_AUTH_APP_NAME="" # GitHub Sign-in In will be suppressed if it is empty. When enable, you also need to set GITHUB_AUTH_CLIENT_SECRET in .dev.vars for Cloudflare development and Node environments, and in workers config for Cloudflare production environments.

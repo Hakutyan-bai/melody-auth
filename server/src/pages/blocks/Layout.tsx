@@ -35,13 +35,13 @@ const Layout = ({
         <section className='flex flex-col justify-center items-center gap-4'>
           {children}
         </section>
-        <a
+        {/* <a
           target='__blank'
           href='https://github.com/ValueMelody/melody-auth'
           className='text-sm mt-2'
         >
           {layout.poweredByAuth[locale]}
-        </a>
+        </a> */}
       </section>
     </section>
   </main>
