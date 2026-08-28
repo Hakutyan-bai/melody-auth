@@ -2,8 +2,39 @@ import {
   describe, expect, test,
 } from 'vitest'
 import { Context } from 'hono'
-import { getRequestIP } from './request'
+import {
+  getLocaleFromQuery, getRequestIP,
+} from './request'
 import { typeConfig } from 'configs'
+
+describe(
+  'getLocaleFromQuery',
+  () => {
+    const context = {
+      env: { SUPPORTED_LOCALES: ['en', 'zh'] },
+    } as unknown as Context<typeConfig.Context>
+
+    test(
+      'matches a regional locale to its supported base locale',
+      () => {
+        expect(getLocaleFromQuery(
+          context,
+          'zh-CN',
+        )).toBe('zh')
+      },
+    )
+
+    test(
+      'falls back to the first supported locale',
+      () => {
+        expect(getLocaleFromQuery(
+          context,
+          'de-DE',
+        )).toBe('en')
+      },
+    )
+  },
+)
 
 describe(
   'getRequestIP',

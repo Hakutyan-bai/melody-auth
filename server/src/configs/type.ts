@@ -8,7 +8,7 @@ import { oauthDto } from 'dtos'
 import { typeConfig } from 'configs'
 import { userModel } from 'models'
 
-export type Locale = 'en' | 'fr'
+export type Locale = 'en' | 'fr' | 'zh'
 
 export type Bindings = {
   DB: D1Database;

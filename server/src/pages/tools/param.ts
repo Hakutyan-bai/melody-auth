@@ -2,13 +2,24 @@ import { parse } from 'qs'
 import { typeConfig } from 'configs'
 import { Policy } from 'dtos/oauth'
 
-export const getLocaleFromParams = () => {
+export const getLocaleFromParams = (supportedLocales?: typeConfig.Locale[]) => {
   const params = parse(
     window.location.search,
     { ignoreQueryPrefix: true },
   )
 
-  return ('locale' in params ? String(params.locale) : 'en') as typeConfig.Locale
+  const requestedLocale = 'locale' in params ? String(params.locale) : 'en'
+  if (!supportedLocales?.length) return requestedLocale as typeConfig.Locale
+
+  const locale = requestedLocale.trim().toLowerCase().replace(
+    '_',
+    '-',
+  )
+  const baseLocale = locale.split('-')[0]
+
+  return supportedLocales.find((supportedLocale) => supportedLocale.toLowerCase() === locale) ??
+    supportedLocales.find((supportedLocale) => supportedLocale.toLowerCase() === baseLocale) ??
+    supportedLocales[0]
 }
 
 export const getStepFromParams = () => {

@@ -39,7 +39,7 @@ const Main = () => {
 
   const {
     locale, handleSwitchLocale,
-  } = useLocale({ initialLocale: getLocaleFromParams() })
+  } = useLocale({ initialLocale: getLocaleFromParams(initialProps.locales) })
 
   const {
     view, handleSwitchView,

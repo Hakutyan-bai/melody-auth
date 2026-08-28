@@ -15,8 +15,15 @@ export const getLocaleFromQuery = (
   c: Context<typeConfig.Context>, requestedLocale?: string,
 ): typeConfig.Locale => {
   const { SUPPORTED_LOCALES: locales } = env(c)
-  const locale = requestedLocale?.toLowerCase() ?? ''
-  return locales.find((supportedLocale) => supportedLocale === locale) ?? locales[0]
+  const locale = requestedLocale?.trim().toLowerCase().replace(
+    '_',
+    '-',
+  ) ?? ''
+  const baseLocale = locale.split('-')[0]
+
+  return locales.find((supportedLocale) => supportedLocale.toLowerCase() === locale) ??
+    locales.find((supportedLocale) => supportedLocale.toLowerCase() === baseLocale) ??
+    locales[0]
 }
 
 export const getQueryString = (c: Context<typeConfig.Context>): string => c.req.url.split('?')[1]

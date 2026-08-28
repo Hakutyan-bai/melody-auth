@@ -48,6 +48,28 @@ describe(
             expect(getLocaleFromParams()).toBe('en')
           },
         )
+
+        test(
+          'matches a regional locale to its supported base locale',
+          () => {
+            window.location.search = '?locale=zh-CN'
+            expect(getLocaleFromParams([
+              'en',
+              'zh',
+            ])).toBe('zh')
+          },
+        )
+
+        test(
+          'falls back to the first supported locale',
+          () => {
+            window.location.search = '?locale=de-DE'
+            expect(getLocaleFromParams([
+              'en',
+              'zh',
+            ])).toBe('en')
+          },
+        )
       },
     )
 
