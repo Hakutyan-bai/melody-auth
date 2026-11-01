@@ -56,7 +56,8 @@ const Page = () => {
           />
         )}
       />
-      <Table className='break-all'>
+      <p className='admin-list-meta mb-5'>{t('common.total', { count: apps.length })}</p>
+      <Table className='admin-app-table'>
         <TableHeader className='md:hidden'>
           <TableRow>
             <TableHead>{t('apps.app')}</TableHead>
@@ -77,8 +78,8 @@ const Page = () => {
               <TableCell>
                 <div className='flex items-center justify-between'>
                   <div className='flex flex-col gap-2'>
-                    {app.name}
-                    {app.clientId}
+                    <p className='admin-identity'>{app.name}</p>
+                    <p className='admin-id'>{app.clientId}</p>
                     <div className='flex items-center gap-2'>
                       <EntityStatusLabel isEnabled={app.isActive} />
                       <ClientTypeLabel type={app.type} />
@@ -98,8 +99,8 @@ const Page = () => {
             <TableRow
               key={app.id}
               data-testid='appRow'>
-              <TableCell>{app.name}</TableCell>
-              <TableCell>{app.clientId}</TableCell>
+              <TableCell><span className='admin-identity'>{app.name}</span></TableCell>
+              <TableCell><span className='admin-id'>{app.clientId}</span></TableCell>
               <TableCell>
                 <EntityStatusLabel isEnabled={app.isActive} />
               </TableCell>

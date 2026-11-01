@@ -1,11 +1,15 @@
-import { getByText } from '@testing-library/dom'
+import {
+  getByText, fireEvent,
+} from '@testing-library/dom'
 import {
   expect, describe, it, beforeEach, vi,
 } from 'vitest'
 import { render } from 'hono/jsx/dom'
 import Layout from './Layout'
-import { layout } from 'pages/tools/locale'
-import { typeConfig } from 'configs'
+import {
+  variableConfig, typeConfig,
+} from 'configs'
+import { View } from 'configs/route'
 
 // Unit tests for the Layout Component
 
@@ -67,8 +71,8 @@ describe(
       'renders LocaleSelector when multiple locales are provided',
       () => {
         const container = setup()
-        const localeSelectorDiv = container.querySelector('div.absolute.right-0')
-        expect(localeSelectorDiv).toBeDefined()
+        const localeSelector = container.querySelector('select[aria-label="Select Locale"]')
+        expect(localeSelector).not.toBeNull()
       },
     )
 
@@ -76,18 +80,58 @@ describe(
       'does not render LocaleSelector when only one locale is provided',
       () => {
         const container = setup({ locales: singleLocale })
-        const localeSelectorDiv = container.querySelector('div.absolute.right-0')
-        expect(localeSelectorDiv).toBeNull()
+        const localeSelector = container.querySelector('select[aria-label="Select Locale"]')
+        expect(localeSelector).toBeNull()
       },
     )
 
     it(
-      'renders the powered-by link with correct href and text',
+      'shows the actual destination application as text',
+      () => {
+        const container = setup({ appName: 'Sakura Notes <private>' })
+        expect(container.querySelector('.auth-destination p')?.textContent).toBe('Sakura Notes <private>')
+        expect(container.querySelector('.auth-destination private')).toBeNull()
+      },
+    )
+
+    it(
+      'switches account views and honours disabled registration',
+      () => {
+        const onSwitchView = vi.fn()
+        const container = setup({
+          onSwitchView,
+          enableSignUp: false,
+          enablePasswordReset: true,
+        })
+        const nav = container.querySelector('nav')!
+        expect(nav.querySelectorAll('button')).toHaveLength(2)
+        fireEvent.click(getByText(
+          nav,
+          'Recover access',
+        ))
+        expect(onSwitchView).toHaveBeenCalledWith(View.ResetPassword)
+      },
+    )
+
+    it(
+      'does not offer account navigation during a verification step',
+      () => {
+        const container = setup({
+          view: View.OtpMfa,
+          onSwitchView: vi.fn(),
+          enableSignUp: true,
+        })
+        expect(container.querySelector('nav')).toBeNull()
+      },
+    )
+
+    it(
+      'identifies the authentication service in the footer',
       () => {
         const container = setup()
-        const link = container.querySelector('a[href="https://github.com/ValueMelody/melody-auth"]')
-        expect(link).toBeDefined()
-        expect(link?.textContent?.trim()).toBe(layout.poweredByAuth[dummyLocale])
+        const footer = container.querySelector('footer')
+        expect(footer?.textContent).toContain(variableConfig.systemConfig.name)
+        expect(footer?.textContent).toContain('Account authentication')
       },
     )
   },

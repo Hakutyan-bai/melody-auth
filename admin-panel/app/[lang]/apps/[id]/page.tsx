@@ -112,7 +112,7 @@ const Page = () => {
   if (!app) return null
 
   return (
-    <section>
+    <section className='admin-detail'>
       <Breadcrumb
         page={{ label: app.name }}
         parent={{
@@ -318,11 +318,11 @@ const Page = () => {
             </TableRow>
             <TableRow>
               <TableCell>{t('common.createdAt')}</TableCell>
-              <TableCell>{app.createdAt} UTC</TableCell>
+              <TableCell>{app.createdAt ? `${app.createdAt} UTC` : '—'}</TableCell>
             </TableRow>
             <TableRow>
               <TableCell>{t('common.updatedAt')}</TableCell>
-              <TableCell>{app.updatedAt} UTC</TableCell>
+              <TableCell>{app.updatedAt ? `${app.updatedAt} UTC` : '—'}</TableCell>
             </TableRow>
           </TableBody>
         </Table>

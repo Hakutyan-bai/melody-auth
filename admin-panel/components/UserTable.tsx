@@ -104,13 +104,15 @@ const UserTable = ({
   return (
     <section>
       {!loadedUsers && !isViewingAllUsers && (
-        <header className='mb-6 flex items-center gap-4'>
+        <header className='admin-user-toolbar'>
           <Input
             className='w-60'
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={t('users.search')}
+            aria-label={t('users.search')}
           />
+          <p className='admin-list-meta'>{t('common.total', { count })}</p>
         </header>
       )}
       {data && data.count === 0 && (
@@ -118,7 +120,7 @@ const UserTable = ({
           {t('users.noUsers')}
         </Alert>
       )}
-      {data && data.count !== 0 && <Table>
+      {data && data.count !== 0 && <Table className='admin-user-table'>
         <TableHeader className='md:hidden'>
           <TableRow>
             <TableHead>{t('users.user')}</TableHead>
@@ -126,9 +128,9 @@ const UserTable = ({
         </TableHeader>
         <TableHeader className='max-md:hidden'>
           <TableRow>
-            <TableHead>{t('users.authId')}</TableHead>
+            <TableHead>{t('users.email')}</TableHead>
             <TableHead>
-              {t('users.email')}
+              {t('users.authId')}
             </TableHead>
             <TableHead>{t('users.status')}</TableHead>
             {configs.ENABLE_NAMES && (
@@ -144,19 +146,16 @@ const UserTable = ({
               data-testid='userRow'>
               <TableCell>
                 <section className='flex items-center justify-between'>
-                  <section className='flex flex-col gap-2'>
-                    {user.authId}
-                    {user.authId === userInfo?.authId && <div className='flex'><IsSelfLabel /></div>}
-                    {user.email}
-                    <EntityStatusLabel
-                      isEnabled={user.isActive}
-                      isInviting={user.isInviting}
-                    />
-                    {configs.ENABLE_NAMES && (
-                      <p>
-                        {`${user.firstName ?? ''} ${user.lastName ?? ''}`}
-                      </p>
-                    )}
+                  <section className='admin-mobile-identity'>
+                    <p className='admin-identity'>{user.email || user.authId}</p>
+                    <div className='admin-mobile-user-meta'>
+                      {configs.ENABLE_NAMES && <span>{`${user.firstName ?? ''} ${user.lastName ?? ''}`}</span>}
+                      <EntityStatusLabel isEnabled={user.isActive} isInviting={user.isInviting} />
+                    </div>
+                    <div className='admin-mobile-user-meta'>
+                      <span className='admin-id'>{user.authId}</span>
+                      {user.authId === userInfo?.authId && <IsSelfLabel />}
+                    </div>
                   </section>
                   <EditLink
                     viewOnly={!canWriteUser}
@@ -173,12 +172,14 @@ const UserTable = ({
               key={user.id}
               data-testid='userRow'>
               <TableCell>
+                <span className='admin-identity'>{user.email}</span>
+              </TableCell>
+              <TableCell>
                 <div className='flex items-center gap-2'>
-                  {user.authId}
+                  <span className='admin-id'>{user.authId}</span>
                   {user.authId === userInfo?.authId && <IsSelfLabel />}
                 </div>
               </TableCell>
-              <TableCell>{user.email}</TableCell>
               <TableCell>
                 <EntityStatusLabel
                   isEnabled={user.isActive}

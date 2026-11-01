@@ -3,17 +3,17 @@ import {
 } from '@melody-auth/shared'
 
 export enum DefaultBranding {
-  FontFamily = 'Inter',
-  FontUrl = 'https://fonts.googleapis.com/css2?family=Inter:wght@400..600&display=swap',
-  LayoutColor = 'lightgray',
-  LabelColor = 'black',
-  PrimaryButtonColor = 'white',
-  PrimaryButtonLabelColor = 'black',
-  PrimaryButtonBorderColor = 'lightgray',
+  FontFamily = 'IBM Plex Sans',
+  FontUrl = 'https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&display=swap',
+  LayoutColor = '#f4f6f5',
+  LabelColor = '#131416',
+  PrimaryButtonColor = '#202522',
+  PrimaryButtonLabelColor = '#ffffff',
+  PrimaryButtonBorderColor = '#202522',
   SecondaryButtonColor = 'white',
   SecondaryButtonLabelColor = 'black',
   SecondaryButtonBorderColor = 'white',
-  CriticalIndicatorColor = '#e00',
+  CriticalIndicatorColor = '#b42332',
 }
 
 export enum DefaultEnvironment {
@@ -71,7 +71,7 @@ export const RequestIPConfig = Object.freeze({
 })
 
 export const systemConfig = Object.freeze({
-  name: 'Melody Auth',
+  name: 'SakuraInk Auth',
   enableOrgGroup: true,
   emailVerificationCodeExpiresIn: 7200, // must be x * 3600 (in seconds)
   passwordResetCodeExpiresIn: 7200, // must be x * 3600 (in seconds)

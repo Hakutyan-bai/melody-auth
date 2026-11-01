@@ -166,7 +166,7 @@ const Page = () => {
 
 export default Page
 
-export const samlMetadataExample = `Example:
+const samlMetadataExample = `Example:
 <EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" entityID="">
   <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
     <KeyDescriptor use="signing">

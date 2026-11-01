@@ -150,6 +150,57 @@ export const emailMfa = Object.freeze({
   },
 })
 
+export const authLayout = Object.freeze({
+  en: {
+    account: 'Your account',
+    accountCenter: 'Account center',
+    signIn: 'Sign in',
+    signUp: 'Create account',
+    recovery: 'Recover access',
+    identity: 'Your account. Your access.',
+    description: 'Sign in with your account to continue to your application.',
+    destination: 'Continue to',
+    contextNote: 'Check the application name before continuing.',
+    railNote: 'Sign-in, verification and application consent, in one place.',
+    footerNote: 'Account authentication',
+    signInDescription: 'Use your email and password to continue.',
+    otherMethods: 'Other ways to sign in',
+    accountActions: 'Account options',
+  },
+  zh: {
+    account: '你的账户',
+    accountCenter: '账户中心',
+    signIn: '登录账户',
+    signUp: '创建账户',
+    recovery: '找回账户',
+    identity: '一个账户，连接应用。',
+    description: '使用你的账户继续，登录后返回应用。',
+    destination: '正在前往',
+    contextNote: '继续前，请确认这是你要访问的应用。',
+    railNote: '在同一处完成登录、身份验证与应用授权。',
+    footerNote: '账户身份认证',
+    signInDescription: '使用邮箱和密码登录你的账户。',
+    otherMethods: '其他登录方式',
+    accountActions: '账户选项',
+  },
+  fr: {
+    account: 'Votre compte',
+    accountCenter: 'Espace compte',
+    signIn: 'Se connecter',
+    signUp: 'Créer un compte',
+    recovery: 'Récupérer l’accès',
+    identity: 'Votre compte, vos accès.',
+    description: 'Connectez-vous pour accéder à votre application.',
+    destination: 'Continuer vers',
+    contextNote: 'Vérifiez le nom de l’application avant de continuer.',
+    railNote: 'Connexion, vérification et autorisation des applications au même endroit.',
+    footerNote: 'Authentification du compte',
+    signInDescription: 'Connectez-vous avec votre e-mail et votre mot de passe.',
+    otherMethods: 'Autres moyens de connexion',
+    accountActions: 'Options du compte',
+  },
+})
+
 export const layout = Object.freeze({
   poweredByAuth: {
     en: `Powered by ${variableConfig.systemConfig.name}`,

@@ -110,6 +110,11 @@ const Main = () => {
       locales={initialProps.enableLocaleSelector ? initialProps.locales : [locale]}
       logoUrl={initialProps.logoUrl}
       onSwitchLocale={handleSwitchLocale}
+      appName={initialProps.appName}
+      view={view}
+      enableSignUp={initialProps.enableSignUp}
+      enablePasswordReset={initialProps.enablePasswordReset}
+      onSwitchView={handleSwitchView}
     >
       <CurrentView
         locale={locale}

@@ -3,7 +3,7 @@ export interface ViewTitleProps {
 }
 
 const ViewTitle = ({ title }: ViewTitleProps) => {
-  return <h1 className='w-(--text-width) text-center text-lg font-bold'>{title}</h1>
+  return <h1 className='auth-view-title'>{title}</h1>
 }
 
 export default ViewTitle

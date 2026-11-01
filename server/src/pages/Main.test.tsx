@@ -244,7 +244,7 @@ describe(
 
         const layout = container.firstElementChild
         expect(layout).toBeDefined()
-        expect(layout?.className).toContain('layout')
+        expect(layout?.className).toContain('auth-shell')
       },
     )
 

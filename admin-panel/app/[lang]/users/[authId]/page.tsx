@@ -601,7 +601,7 @@ const Page = () => {
           href: routeTool.Internal.Users,
         }}
       />
-      <section>
+      <section className='admin-detail'>
         <Table>
           <TableHeader>
             <TableRow>

@@ -1,7 +1,7 @@
 {
   "layout": {
     "blocked": "只有超级管理员可以访问此应用。",
-    "brand": "Melody Auth",
+    "brand": "SakuraInk Auth",
     "logout": "退出登录",
     "users": "用户",
     "userAttributes": "用户属性",
@@ -11,8 +11,10 @@
     "orgs": "组织",
     "logs": "日志",
     "samlSso": "SAML",
-    "dashboard": "仪表盘",
-    "account": "账户"
+    "dashboard": "概览",
+    "account": "账户",
+    "console": "身份与访问管理",
+    "management": "管理"
   },
   "account": {
     "updateInfo": "更新信息",
@@ -45,12 +47,15 @@
     "deleteConfirm": "确定要删除 {item} 吗？",
     "deleteConfirmBtn": "删除",
     "cancel": "取消",
-    "close": "关闭"
+    "close": "关闭",
+    "edit": "编辑",
+    "view": "查看",
+    "total": "共 {count} 项"
   },
   "dashboard": {
     "informationConfigs": "信息配置",
     "localeConfigs": "语言配置",
-    "suppressionConfigs": "抑制配置",
+    "suppressionConfigs": "登录与注册",
     "mfaConfigs": "MFA 配置",
     "authConfigs": "认证配置",
     "bruteForceConfigs": "暴力破解防护配置",
@@ -61,7 +66,20 @@
     "configSeconds": "秒",
     "links": "系统链接",
     "apiSwagger": "S2S API Swagger",
-    "embeddedSwagger": "Embedded API Swagger"
+    "embeddedSwagger": "Embedded API Swagger",
+    "overviewDescription": "查看认证服务的当前配置，管理账户与应用的访问。",
+    "authenticationStatus": "认证能力",
+    "signUp": "账户注册",
+    "passwordSignIn": "密码登录",
+    "appConsent": "应用授权确认",
+    "passkeys": "通行密钥",
+    "endpointDescription": "应用集成所需的发现文档、公钥与接口说明。",
+    "authServer": "认证服务",
+    "configReadOnly": "此处仅展示配置，修改后需重新部署认证服务。",
+    "allConfigs": "运行配置",
+    "configDescription": "按功能查看完整配置，或搜索名称与当前值。",
+    "searchConfigs": "搜索配置名称或值",
+    "noConfigs": "没有匹配的配置。"
   },
   "apps": {
     "title": "应用",

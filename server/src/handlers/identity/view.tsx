@@ -111,7 +111,7 @@ const viewRender = async (
 }
 
 export const getAuthorizeView = async (c: Context<typeConfig.Context>) => {
-  const { queryDto } = await oauthHandler.parseGetAuthorizeDto(c)
+  const { queryDto, app } = await oauthHandler.parseGetAuthorizeDto(c)
 
   const {
     ENABLE_SIGN_UP: allowSignUp,
@@ -165,6 +165,7 @@ export const getAuthorizeView = async (c: Context<typeConfig.Context>) => {
       window.__initialProps = {
         locales: "${locales.join(',')}",
         logoUrl: "${branding.logoUrl}",
+        appName: decodeURIComponent("${encodeURIComponent(app.name)}"),
         enableLocaleSelector: ${enableLocaleSelector.toString()},
         enablePasswordReset: ${enablePasswordReset.toString()},
         enableSignUp: ${enableSignUp.toString()},

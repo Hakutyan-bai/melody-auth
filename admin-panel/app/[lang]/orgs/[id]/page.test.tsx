@@ -620,12 +620,12 @@ describe(
         ).forEach((
           row, index,
         ) => {
-          expect(row.querySelectorAll('td')[0]?.innerHTML).toContain(users[index].authId)
+          expect(row.querySelectorAll('td')[1]?.innerHTML).toContain(users[index].authId)
           if (index === 0) {
-            expect(row.querySelectorAll('td')[0]?.innerHTML).toContain('users.you')
+            expect(row.querySelectorAll('td')[1]?.innerHTML).toContain('users.you')
           }
 
-          expect(row.querySelectorAll('td')[1]?.innerHTML).toContain(users[index].email)
+          expect(row.querySelectorAll('td')[0]?.innerHTML).toContain(users[index].email)
           expect(row.querySelectorAll('td')[2]?.innerHTML).toContain(users[index].isActive ? 'common.active' : 'common.disabled')
           expect(row.querySelectorAll('td')[3]?.innerHTML).toContain(`${users[index].firstName} ${users[index].lastName}`)
           const editLink = row.querySelectorAll('td')[4]?.getElementsByTagName('a')

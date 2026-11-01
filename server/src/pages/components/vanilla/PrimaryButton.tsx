@@ -14,9 +14,10 @@ const PrimaryButton = ({
 }: PrimaryButtonProps) => {
   return (
     <button
-      className={`flex items-center justify-center cursor-pointer p-2 bg-primaryButtonColor text-primaryButtonLabelColor border border-primaryButtonBorderColor rounded-lg font-medium text-base ${className ?? ''}`}
+      className={`auth-primary flex items-center justify-center cursor-pointer p-2 bg-primaryButtonColor text-primaryButtonLabelColor border border-primaryButtonBorderColor font-medium text-base ${className ?? ''}`}
       type={type}
       disabled={disabled || isLoading}
+      aria-busy={isLoading || undefined}
       onClick={onClick}
     >
       {title}

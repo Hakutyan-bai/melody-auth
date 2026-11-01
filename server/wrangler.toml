@@ -20,9 +20,9 @@ AUTH_SERVER_URL="https://auth.sakuraink.net"
 ENVIRONMENT="prod"
 
 # 登录及认证页面显示的公司 Logo 地址。
-COMPANY_LOGO_URL="https://valuemelody.com/logo.svg"
+COMPANY_LOGO_URL="https://img.sakura.ink/file/AgACAgUAAyEGAASIHQfFAAPyapGajB6bfVPZ44qk8fQbh0Lne0YAAowQaxs905BUzsgJ0gLRWEQBAAMCAANtAAM9BA.jpg"
 # 邮件模板使用的公司 Logo 地址；建议使用 JPG/PNG，因为部分邮件客户端不支持 SVG。
-COMPANY_EMAIL_LOGO_URL="https://valuemelody.com/logo.jpg"
+COMPANY_EMAIL_LOGO_URL="https://img.sakura.ink/file/AgACAgUAAyEGAASIHQfFAAPyapGajB6bfVPZ44qk8fQbh0Lne0YAAowQaxs905BUzsgJ0gLRWEQBAAMCAANtAAM9BA.jpg"
 # 系统邮件中显示的发件人名称。
 EMAIL_SENDER_NAME="Sakuraink Auth"
 # 注册页面展示的服务条款链接；留空时不显示。
@@ -53,7 +53,7 @@ ENABLE_USER_APP_CONSENT=true
 # 是否要求新用户验证邮箱；启用后注册时会发送验证邮件，因此需要邮件服务商。
 ENABLE_EMAIL_VERIFICATION=false
 # 是否用欢迎邮件替代邮箱验证邮件；仅在 ENABLE_EMAIL_VERIFICATION=true 时生效。
-REPLACE_EMAIL_VERIFICATION_WITH_WELCOME_EMAIL=false
+REPLACE_EMAIL_VERIFICATION_WITH_WELCOME_EMAIL=true
 # 是否启用组织（Organization）多租户功能。
 ENABLE_ORG=false
 # 是否允许用户在登录过程中切换所属组织；需要先启用组织功能。

@@ -47,6 +47,7 @@ import LoadingPage from 'components/LoadingPage'
 import {
   Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarProvider,
+  SidebarTrigger, useSidebar,
 } from 'components/ui/sidebar'
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
@@ -156,6 +157,7 @@ const LayoutSetup = ({ children } : PropsWithChildren) => {
 
   const nextRouter = useRouter()
   const pathname = useI18nPathname()
+  const { setOpenMobile } = useSidebar()
 
   const configs = useSignalValue(configSignal)
   const showLogs = (
@@ -188,6 +190,11 @@ const LayoutSetup = ({ children } : PropsWithChildren) => {
   const otherLocale = supportedLocales.find((l) => l !== locale) ?? DEFAULT_LOCALE
 
   useEffect(
+    () => setOpenMobile(false),
+    [pathname, setOpenMobile],
+  )
+
+  useEffect(
     () => {
       if (supportedLocales.includes(locale)) {
         localStorage.setItem(
@@ -209,23 +216,26 @@ const LayoutSetup = ({ children } : PropsWithChildren) => {
     <>
       <Sidebar
         collapsible='icon'
-        variant='floating'>
+        variant='inset'>
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <div className='flex items-center mt-2'>
-                <img
-                  src='https://valuemelody.com/logo.svg'
-                  className='mr-3 h-6'
-                />
-                <span className='self-center whitespace-nowrap text-medium font-semibold dark:text-white'>
+              <div className='admin-brand'>
+                {configs?.COMPANY_LOGO_URL && <img
+                  src={configs.COMPANY_LOGO_URL}
+                  alt=''
+                  className='admin-brand-logo'
+                />}
+                <span className='admin-brand-name'>
                   {t('layout.brand')}
+                  <span>{t('layout.console')}</span>
                 </span>
               </div>
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
-        <SidebarContent className='p-2 mt-4'>
+        <SidebarContent className='admin-navigation'>
+          <p className='admin-nav-label'>{t('layout.management')}</p>
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton
@@ -247,7 +257,7 @@ const LayoutSetup = ({ children } : PropsWithChildren) => {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === routeTool.Internal.Users}
+                  isActive={pathname?.startsWith(routeTool.Internal.Users)}
                 >
                   <Link
                     href={routeTool.Internal.Users}
@@ -298,7 +308,7 @@ const LayoutSetup = ({ children } : PropsWithChildren) => {
               <SidebarMenuItem>
                 <SidebarMenuButton
                   asChild
-                  isActive={pathname === routeTool.Internal.Apps}
+                  isActive={pathname?.startsWith(routeTool.Internal.Apps)}
                 >
                   <Link
                     href={routeTool.Internal.Apps}
@@ -431,17 +441,23 @@ const LayoutSetup = ({ children } : PropsWithChildren) => {
           </DropdownMenu>
         </SidebarFooter>
       </Sidebar>
-      {
-        configs
-          ? (
-            <section className='w-full p-6'>
-              {children}
-            </section>
-          )
-          : (
-            <LoadingPage />
-          )
-      }
+      <div className='admin-workspace'>
+        <header className='admin-topbar'>
+          <div className='admin-topbar-context'>
+            <SidebarTrigger className='min-[1100px]:hidden' />
+            <span className='admin-mobile-brand'>{t('layout.brand')}</span>
+            <span className='admin-desktop-context'>{t('layout.console')}</span>
+          </div>
+          {configs?.AUTH_SERVER_URL && (
+            <span className='admin-service-host'>
+              {configs.AUTH_SERVER_URL.replace(/^https?:\/\//, '').split('/')[0]}
+            </span>
+          )}
+        </header>
+        <main className='admin-canvas' id='main-content'>
+          {configs ? children : <LoadingPage />}
+        </main>
+      </div>
     </>
   )
 }
@@ -473,7 +489,7 @@ const Setup = ({ children } : PropsWithChildren) => {
         }}
       >
         <AuthSetup>
-          <SidebarProvider>
+          <SidebarProvider className='admin-shell'>
             <LayoutSetup>
               {children}
             </LayoutSetup>

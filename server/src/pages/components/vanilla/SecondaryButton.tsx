@@ -13,9 +13,10 @@ const SecondaryButton = ({
   return (
     <button
       type='button'
-      className='max-w-(--text-width) flex items-center justify-center cursor-pointer text-base font-medium rounded-lg text-center border border-secondaryButtonBorderColor text-secondaryButtonLabelColor bg-secondaryButtonColor'
+      className='auth-secondary max-w-(--text-width) flex items-center justify-center cursor-pointer text-base font-medium text-center border border-secondaryButtonBorderColor text-secondaryButtonLabelColor bg-secondaryButtonColor'
       onClick={onClick}
       disabled={disabled || isLoading}
+      aria-busy={isLoading || undefined}
     >
       {title}
       {isLoading && (

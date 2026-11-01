@@ -81,6 +81,7 @@ describe(
     const mockPush = vi.fn()
 
     beforeEach(() => {
+      Object.defineProperty(window, 'innerWidth', { value: 1440, writable: true, configurable: true })
       vi.clearAllMocks()
       errorSignal.value = ''
       configSignal.value = null
@@ -175,7 +176,7 @@ describe(
         render(<NextIntlClientProvider
           locale='en'
           messages={{}}><Setup>Test</Setup></NextIntlClientProvider>)
-        expect(screen.getByText('layout.brand')).toBeInTheDocument()
+        expect(screen.getAllByText('layout.brand').length).toBeGreaterThan(0)
         expect(screen.getByText('layout.dashboard')).toBeInTheDocument()
       },
     )

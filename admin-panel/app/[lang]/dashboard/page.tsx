@@ -1,7 +1,10 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useMemo } from 'react'
+import {
+  useMemo, useState,
+} from 'react'
+import { ArrowUpRight, ChevronDown, Search } from 'lucide-react'
 
 import ConfigBooleanValue from 'components/ConfigBooleanValue'
 import PageTitle from 'components/PageTitle'
@@ -12,6 +15,7 @@ import {
 } from 'components/ui/table'
 import Breadcrumb from 'components/Breadcrumb'
 import LoadingPage from 'components/LoadingPage'
+import { Input } from 'components/ui/input'
 
 const configNameClass = 'w-96 max-md:w-60'
 
@@ -19,6 +23,7 @@ const Page = () => {
   const t = useTranslations()
 
   const configs = useSignalValue(configSignal)
+  const [search, setSearch] = useState('')
 
   const configTypes = [
     {
@@ -119,86 +124,85 @@ const Page = () => {
 
   if (!configs) return <LoadingPage />
 
+  const endpoints = links ? [
+    { label: 'OpenID configuration', href: links.openidConfig },
+    { label: 'JWKS', href: links.jwks },
+    { label: t('dashboard.apiSwagger'), href: links.apiSwagger },
+    { label: t('dashboard.embeddedSwagger'), href: links.embeddedSwagger },
+  ] : []
+  const summary = [
+    { name: t('dashboard.signUp'), key: 'ENABLE_SIGN_UP' },
+    { name: t('dashboard.passwordSignIn'), key: 'ENABLE_PASSWORD_SIGN_IN' },
+    { name: t('dashboard.appConsent'), key: 'ENABLE_USER_APP_CONSENT' },
+    { name: t('dashboard.passkeys'), key: 'ALLOW_PASSKEY_ENROLLMENT' },
+  ]
+  const query = search.trim().toLowerCase()
+  const groups = configTypes.map((group) => ({
+    ...group,
+    value: group.value.filter((key) => !query || `${group.name} ${key} ${configs[key] ?? ''}`.toLowerCase().includes(query)),
+  })).filter((group) => group.value.length)
+
   return (
-    <section>
+    <section className='admin-overview'>
       <Breadcrumb
         page={{ label: t('layout.dashboard') }}
       />
-      {links && (
-        <>
-          <PageTitle
-            className='mb-6'
-            title={t('dashboard.links')}
-          />
-          <Table className='break-all'>
-            <TableHeader>
-              <TableRow>
-                <TableHead className={configNameClass}>{t('dashboard.configName')}</TableHead>
-                <TableHead>{t('dashboard.configValue')}</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell>OPENID CONFIGURATION</TableCell>
-                <TableCell>
-                  <a
-                    target='_blank'
-                    href={links.openidConfig}
-                    rel='noreferrer'
-                  >
-                    {links.openidConfig}
-                  </a>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>JWKS</TableCell>
-                <TableCell>
-                  <a
-                    target='_blank'
-                    href={links.jwks}
-                    rel='noreferrer'
-                  >
-                    {links.jwks}
-                  </a>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>{t('dashboard.apiSwagger')}</TableCell>
-                <TableCell>
-                  <a
-                    target='_blank'
-                    href={links.apiSwagger}
-                    rel='noreferrer'
-                  >
-                    {links.apiSwagger}
-                  </a>
-                </TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell>{t('dashboard.embeddedSwagger')}</TableCell>
-                <TableCell>
-                  <a
-                    target='_blank'
-                    href={links.embeddedSwagger}
-                    rel='noreferrer'
-                  >
-                    {links.embeddedSwagger}
-                  </a>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </>
-      )}
-      {configTypes.map((configType) => (
-        <section
-          key={configType.name}
-          className='mt-8 gap-6'>
-          <PageTitle
-            className='mt-8 mb-6'
-            title={configType.name}
-          />
-          <Table className='break-all'>
+      <p className='admin-page-description'>{t('dashboard.overviewDescription')}</p>
+      <section className='admin-auth-capabilities' aria-label={t('dashboard.authenticationStatus')}>
+        {summary.map((item) => (
+          <div key={item.key}>
+            <span>{item.name}</span>
+            <ConfigBooleanValue config={configs[item.key]} />
+          </div>
+        ))}
+      </section>
+      <div className='admin-overview-grid'>
+        <section className='admin-endpoints'>
+          <PageTitle title={t('dashboard.links')} />
+          <p className='admin-section-description'>{t('dashboard.endpointDescription')}</p>
+          <div className='admin-endpoint-list'>
+            {endpoints.map((endpoint) => (
+              <div className='admin-endpoint' key={endpoint.href}>
+                <span>{endpoint.label}</span>
+                <a href={endpoint.href} target='_blank' rel='noreferrer'>
+                  <span>{endpoint.href}</span>
+                  <ArrowUpRight aria-hidden='true' />
+                </a>
+              </div>
+            ))}
+          </div>
+          <div className='admin-service-note'>
+            <span>{t('dashboard.authServer')}</span>
+            <p>{configs.AUTH_SERVER_URL || '—'}</p>
+            <span>{t('dashboard.configReadOnly')}</span>
+          </div>
+        </section>
+        <section className='admin-configs'>
+          <PageTitle title={t('dashboard.allConfigs')} />
+          <p className='admin-section-description'>{t('dashboard.configDescription')}</p>
+          <div className='admin-config-search'>
+            <Search aria-hidden='true' />
+            <Input
+              type='search'
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder={t('dashboard.searchConfigs')}
+              aria-label={t('dashboard.searchConfigs')}
+            />
+          </div>
+          {!groups.length && <p className='admin-empty-state'>{t('dashboard.noConfigs')}</p>}
+          {groups.map((configType) => (
+            <details
+              key={configType.name}
+              className='admin-config-group'
+              open={query ? true : undefined}
+            >
+              <summary>
+                <span>{configType.name}</span>
+                <span className='admin-config-group-count'>{configType.value.length}</span>
+                <ChevronDown aria-hidden='true' />
+              </summary>
+              <Table className='admin-config-table'>
             <TableHeader>
               <TableRow>
                 <TableHead className={configNameClass}>{t('dashboard.configName')}</TableHead>
@@ -208,18 +212,20 @@ const Page = () => {
             <TableBody>
               {configType.value.map((configName) => (
                 <TableRow key={configName}>
-                  <TableCell>{configName}</TableCell>
-                  <TableCell>
+                  <TableCell><code>{configName}</code></TableCell>
+                  <TableCell className={typeof configs[configName] === 'number' ? 'admin-numeric' : undefined}>
                     {typeof configs[configName] === 'boolean' && <ConfigBooleanValue config={configs[configName]} />}
                     {Array.isArray(configs[configName]) && configs[configName].join(', ')}
-                    {typeof configs[configName] !== 'boolean' && !Array.isArray(configs[configName]) && configs[configName]}
+                    {typeof configs[configName] !== 'boolean' && !Array.isArray(configs[configName]) && (configs[configName] === '' || configs[configName] == null ? '—' : configs[configName])}
                   </TableCell>
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+              </Table>
+            </details>
+          ))}
         </section>
-      ))}
+      </div>
     </section>
   )
 }

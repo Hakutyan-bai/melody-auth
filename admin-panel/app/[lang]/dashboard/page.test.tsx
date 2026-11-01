@@ -5,7 +5,9 @@ import {
   vi,
   beforeEach,
 } from 'vitest'
-import { screen } from '@testing-library/react'
+import {
+  screen, fireEvent,
+} from '@testing-library/react'
 import Page from './page'
 import { configSignal } from 'signals'
 import { render } from 'vitest.setup'
@@ -109,8 +111,31 @@ describe(
         render(<Page />)
 
         const localesCell = screen.getByText('SUPPORTED_LOCALES')
-          .nextElementSibling
+          .closest('td')?.nextElementSibling
         expect(localesCell).toHaveTextContent('en, fr')
+      },
+    )
+
+    it(
+      'filters configuration and expands matching groups',
+      () => {
+        render(<Page />)
+        const search = screen.getByRole('searchbox', { name: 'dashboard.searchConfigs' })
+        fireEvent.change(search, { target: { value: 'PASSWORD_RESET_CODE_THRESHOLD' } })
+        expect(screen.getByText('PASSWORD_RESET_CODE_THRESHOLD')).toBeInTheDocument()
+        expect(screen.queryByText('COMPANY_LOGO_URL')).not.toBeInTheDocument()
+        expect(screen.getByText('PASSWORD_RESET_CODE_THRESHOLD').closest('details')).toHaveAttribute('open')
+        fireEvent.change(search, { target: { value: '' } })
+        expect(screen.getByText('COMPANY_LOGO_URL')).toBeInTheDocument()
+      },
+    )
+
+    it(
+      'shows an empty state for a configuration search without matches',
+      () => {
+        render(<Page />)
+        fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'no-such-setting' } })
+        expect(screen.getByText('dashboard.noConfigs')).toBeInTheDocument()
       },
     )
 
@@ -120,19 +145,19 @@ describe(
         render(<Page />)
 
         const expiresInCell = screen.getByText('AUTHORIZATION_CODE_EXPIRES_IN')
-          .nextElementSibling
+          .closest('td')?.nextElementSibling
         expect(expiresInCell).toHaveTextContent('300')
 
         const passwordResetCodeAttemptCell = screen.getByText('PASSWORD_RESET_CODE_THRESHOLD')
-          .nextElementSibling
+          .closest('td')?.nextElementSibling
         expect(passwordResetCodeAttemptCell).toHaveTextContent('5')
 
         const changeEmailCodeAttemptCell = screen.getByText('CHANGE_EMAIL_CODE_THRESHOLD')
-          .nextElementSibling
+          .closest('td')?.nextElementSibling
         expect(changeEmailCodeAttemptCell).toHaveTextContent('5')
 
         const emailVerificationCodeAttemptCell = screen.getByText('EMAIL_VERIFICATION_CODE_THRESHOLD')
-          .nextElementSibling
+          .closest('td')?.nextElementSibling
         expect(emailVerificationCodeAttemptCell).toHaveTextContent('5')
       },
     )

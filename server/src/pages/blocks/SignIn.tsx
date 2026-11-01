@@ -7,7 +7,9 @@ import { typeConfig } from 'configs'
 import {
   InitialProps, View,
 } from 'pages/hooks'
-import { signIn } from 'pages/tools/locale'
+import {
+  signIn, authLayout,
+} from 'pages/tools/locale'
 import { AuthorizeParams } from 'pages/tools/param'
 import EmailField from 'pages/components/vanilla/EmailField'
 import { bannerModel } from 'models'
@@ -57,6 +59,7 @@ const SignIn = ({
   magicLinkSent,
   appBanners,
 }: SignInProps) => {
+  const copy = authLayout[locale] ?? authLayout.en
   if (magicLinkSent) {
     return (
       <>
@@ -69,6 +72,7 @@ const SignIn = ({
   return (
     <>
       <ViewTitle title={signIn.title[locale]} />
+      {initialProps.enablePasswordSignIn && <p className='auth-view-description'>{copy.signInDescription}</p>}
       {appBanners.map((banner) => (
         <Banner
           key={banner.id}
@@ -139,7 +143,11 @@ const SignIn = ({
           initialProps.appleClientId ||
           initialProps.oidcProviders?.length > 0
         ) && (
-          <section className='flex flex-col gap-4 mt-4 items-center'>
+          <section
+            className='auth-social-methods'
+            aria-label={copy.otherMethods}
+          >
+            <p className='auth-methods-label'>{copy.otherMethods}</p>
             <GoogleSignIn
               googleClientId={initialProps.googleClientId}
               locale={locale}
@@ -191,7 +199,10 @@ const SignIn = ({
         initialProps.enablePasswordReset ||
         initialProps.allowPasskey
       ) && (
-        <section className='flex flex-col gap-2'>
+        <section
+          className='auth-account-actions'
+          aria-label={copy.accountActions}
+        >
           {initialProps.allowPasskey && (
             <SecondaryButton
               title={signIn.withPasskey[locale]}

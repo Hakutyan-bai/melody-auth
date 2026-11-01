@@ -1,21 +1,16 @@
-import {
-  CheckIcon, XMarkIcon,
-} from '@heroicons/react/16/solid'
+import { useTranslations } from 'next-intl'
 
 const ConfigBooleanValue = ({ config }: { config?: boolean }) => {
-  return config
-    ? (
-      <CheckIcon
-        className='w-4 h-4'
-        color='green'
-      />
-    )
-    : (
-      <XMarkIcon
-        className='w-4 h-4'
-        color='red'
-      />
-    )
+  const t = useTranslations()
+  return (
+    <span
+      className='admin-config-state'
+      data-enabled={config === true}
+    >
+      <span aria-hidden='true' />
+      {config === undefined ? '—' : t(config ? 'common.enable' : 'common.disabled')}
+    </span>
+  )
 }
 
 export default ConfigBooleanValue

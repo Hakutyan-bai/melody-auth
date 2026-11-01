@@ -7,7 +7,7 @@ const EditIconButton = ({ onClick }: {
 }) => (
   <button
     type='button'
-    className='relative ml-[-25px] cursor-pointer'
+    className='auth-field-action cursor-pointer'
     aria-label='Edit email'
     onClick={onClick}
   >
@@ -69,7 +69,7 @@ const EmailField = ({
         required={required}
         fieldName={name}
       />
-      <div className='flex items-center'>
+      <div className='auth-input-wrap'>
         <FieldInput
           className='pr-[26px]'
           type={type}

@@ -7,7 +7,8 @@ const SubmitError = ({ error }: {
 
   return (
     <p
-      className='break-words mt-4 bg-criticalIndicatorColor text-white rounded-md py-2 px-4 w-(--text-width) self-center box-border'
+      className='auth-submit-error break-words w-(--text-width) box-border'
+      role='alert'
     >
       {error}
     </p>

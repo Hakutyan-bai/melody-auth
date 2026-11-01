@@ -1,7 +1,7 @@
 {
   "layout": {
     "blocked": "Only super admin can access this app.",
-    "brand": "Melody Auth",
+    "brand": "SakuraInk Auth",
     "logout": "Logout",
     "users": "Users",
     "userAttributes": "User Attributes",
@@ -11,8 +11,10 @@
     "orgs": "Orgs",
     "logs": "Logs",
     "samlSso": "SAML",
-    "dashboard": "Dashboard",
-    "account": "Account"
+    "dashboard": "Overview",
+    "account": "Account",
+    "console": "Identity & access",
+    "management": "Management"
   },
   "account": {
     "updateInfo": "Update Info",
@@ -45,12 +47,15 @@
     "deleteConfirm": "Are you sure want to delete {item}",
     "deleteConfirmBtn": "Delete",
     "cancel": "Cancel",
-    "close": "Close"
+    "close": "Close",
+    "edit": "Edit",
+    "view": "View",
+    "total": "{count} total"
   },
   "dashboard": {
     "informationConfigs": "Information Configs",
     "localeConfigs": "Locale Configs",
-    "suppressionConfigs": "Suppression Configs",
+    "suppressionConfigs": "Sign-in and registration",
     "mfaConfigs": "MFA Configs",
     "authConfigs": "Auth Configs",
     "bruteForceConfigs": "Brute-force Configs",
@@ -61,7 +66,20 @@
     "configSeconds": "seconds",
     "links": "System Links",
     "apiSwagger": "S2S API Swagger",
-    "embeddedSwagger": "Embedded API Swagger"
+    "embeddedSwagger": "Embedded API Swagger",
+    "overviewDescription": "Inspect the authentication service and manage access for accounts and applications.",
+    "authenticationStatus": "Authentication capabilities",
+    "signUp": "Registration",
+    "passwordSignIn": "Password sign-in",
+    "appConsent": "Application consent",
+    "passkeys": "Passkeys",
+    "endpointDescription": "Discovery documents, signing keys and API references for your integrations.",
+    "authServer": "Authentication service",
+    "configReadOnly": "Configuration is read-only here. Redeploy the auth service after changes.",
+    "allConfigs": "Runtime configuration",
+    "configDescription": "Browse by function or search configuration names and current values.",
+    "searchConfigs": "Search configuration names or values",
+    "noConfigs": "No matching configuration."
   },
   "apps": {
     "title": "Apps",

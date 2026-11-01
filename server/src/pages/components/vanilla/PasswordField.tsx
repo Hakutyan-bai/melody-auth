@@ -3,7 +3,7 @@ import FieldLabel from './FieldLabel'
 import FieldError from './FieldError'
 import FieldInput from './FieldInput'
 
-const buttonClass = 'relative ml-[-25px] cursor-pointer'
+const buttonClass = 'auth-field-action cursor-pointer'
 const iconClass = 'w-[18px] h-[18px]'
 
 const EyeIconButton = ({ onClick }: {
@@ -94,7 +94,7 @@ const PasswordField = ({
         required={required}
         fieldName={name}
       />
-      <div className='flex items-center'>
+      <div className='auth-input-wrap'>
         <FieldInput
           type={showPassword ? 'text' : 'password'}
           className='pr-[26px]'

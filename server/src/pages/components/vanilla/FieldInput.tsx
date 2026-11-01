@@ -29,7 +29,7 @@ const FieldInput = ({
 
   return (
     <input
-      className={`bg-white border border-[lightGray] rounded-lg p-3 w-(--text-width) ${className || ''}`}
+      className={`auth-input bg-white border p-3 w-(--text-width) ${className || ''}`}
       type={type}
       style={style}
       id={`form-${name}`}

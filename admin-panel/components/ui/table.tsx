@@ -10,7 +10,7 @@ const Table = React.forwardRef<
     className, ...props
   }, ref,
 ) => (
-  <div className='relative w-full overflow-auto'>
+  <div className='admin-table-wrap relative w-full overflow-auto'>
     <table
       ref={ref}
       className={cn(

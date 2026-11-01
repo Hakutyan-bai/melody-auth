@@ -1,7 +1,7 @@
 {
   "layout": {
     "blocked": "Seul le super administrateur peut accéder à cette application.",
-    "brand": "Melody Auth",
+    "brand": "SakuraInk Auth",
     "logout": "Déconnexion",
     "users": "Utilisateurs",
     "userAttributes": "Attributs utilisateur",
@@ -11,8 +11,10 @@
     "orgs": "Organisations",
     "logs": "Journaux",
     "samlSso": "SAML",
-    "dashboard": "Tableau de bord",
-    "account": "Compte"
+    "dashboard": "Vue d’ensemble",
+    "account": "Compte",
+    "console": "Identité et accès",
+    "management": "Gestion"
   },
   "account": {
     "updateInfo": "Mettre à jour les informations",
@@ -45,12 +47,15 @@
     "deleteConfirm": "Êtes-vous sûr de vouloir supprimer {item} ?",
     "deleteConfirmBtn": "Supprimer",
     "cancel": "Annuler",
-    "close": "Fermer"
+    "close": "Fermer",
+    "edit": "Modifier",
+    "view": "Consulter",
+    "total": "{count} au total"
   },
   "dashboard": {
     "informationConfigs": "Configurations d'information",
     "localeConfigs": "Configurations de langue",
-    "suppressionConfigs": "Configurations de suppression",
+    "suppressionConfigs": "Connexion et inscription",
     "mfaConfigs": "Configurations MFA",
     "authConfigs": "Configurations d'authentification",
     "bruteForceConfigs": "Configurations de force brute",
@@ -61,7 +66,20 @@
     "configSeconds": "secondes",
     "links": "Liens système",
     "apiSwagger": "Swagger API S2S",
-    "embeddedSwagger": "Swagger API Embed"
+    "embeddedSwagger": "Swagger API Embed",
+    "overviewDescription": "Consultez la configuration et gérez les accès aux comptes et applications.",
+    "authenticationStatus": "Authentification",
+    "signUp": "Inscription",
+    "passwordSignIn": "Mot de passe",
+    "appConsent": "Autorisation",
+    "passkeys": "Clés d’accès",
+    "endpointDescription": "Documents de découverte, clés et références API.",
+    "authServer": "Service d’authentification",
+    "configReadOnly": "Configuration en lecture seule. Redéployez le service après modification.",
+    "allConfigs": "Configuration",
+    "configDescription": "Parcourez les fonctions ou recherchez un nom et sa valeur.",
+    "searchConfigs": "Rechercher une configuration",
+    "noConfigs": "Aucune configuration correspondante."
   },
   "apps": {
     "title": "Applications",
@@ -119,8 +137,8 @@
     "smsMfaEnrolled": "MFA par SMS activé",
     "smsMfaVerified": "MFA par SMS vérifié",
     "resetEmailMfaTitle": "Êtes-vous sûr de vouloir réinitialiser l’authentification MFA par e-mail ?",
-	  "resetSmsMfaTitle": "Êtes-vous sûr de vouloir réinitialiser l’authentification MFA par SMS ?",
-	  "resetOtpMfaTitle": "Êtes-vous sûr de vouloir réinitialiser l’authentification MFA par OTP ?",
+    "resetSmsMfaTitle": "Êtes-vous sûr de vouloir réinitialiser l’authentification MFA par SMS ?",
+    "resetOtpMfaTitle": "Êtes-vous sûr de vouloir réinitialiser l’authentification MFA par OTP ?",
     "resetMfa": "Réinitialiser MFA",
     "enrollMfa": "Inscrire MFA",
     "otpMfa": "MFA par OTP",

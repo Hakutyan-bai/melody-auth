@@ -3,6 +3,7 @@ import {
 } from '@heroicons/react/16/solid'
 import { Link } from 'i18n/navigation'
 import { Button } from 'components/ui/button'
+import { useTranslations } from 'next-intl'
 
 const EditLink = ({
   href, viewOnly,
@@ -10,6 +11,7 @@ const EditLink = ({
   href: string;
   viewOnly?: boolean;
 }) => {
+  const t = useTranslations()
   return (
     <Button
       className='w-10'
@@ -17,7 +19,10 @@ const EditLink = ({
       variant='outline'
       data-testid='editLink'
     >
-      <Link href={href}>
+      <Link
+        href={href}
+        aria-label={t(viewOnly ? 'common.view' : 'common.edit')}
+      >
         {viewOnly ? <EyeIcon className='w-4 h-4' /> : <PencilSquareIcon className='w-4 h-4' />}
       </Link>
     </Button>

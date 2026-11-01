@@ -8,12 +8,12 @@ const PageTitle = ({
   className?: string;
 }) => {
   return (
-    <h1
+    <h2
       className={classNames(
         'font-semibold text-lg',
         className,
       )}>{title}
-    </h1>
+    </h2>
   )
 }
 

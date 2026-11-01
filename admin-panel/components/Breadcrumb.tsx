@@ -7,7 +7,6 @@ import {
   BreadcrumbSeparator,
 } from 'components/ui/breadcrumb'
 import { useRouter } from 'i18n/navigation'
-import { SidebarTrigger } from 'components/ui/sidebar'
 
 const ShadcnBreadcrumb = ({
   parent,
@@ -29,12 +28,9 @@ const ShadcnBreadcrumb = ({
   return (
     <section
       className={classNames(
-        'flex items-center gap-3 mb-8',
+        'admin-page-heading',
         className,
       )}>
-      <SidebarTrigger
-        variant='outline'
-        className='sm:hidden scale-100' />
       <Breadcrumb>
         <BreadcrumbList>
           {parent && (
@@ -54,14 +50,14 @@ const ShadcnBreadcrumb = ({
 
           {page && (
             <>
-              <h1 className='text-2xl font-bold tracking-tight leading-none'>
+              <h1 className='admin-page-title'>
                 {page.label}
               </h1>
             </>
           )}
         </BreadcrumbList>
       </Breadcrumb>
-      {action}
+      {action && <div className='admin-heading-action'>{action}</div>}
     </section>
   )
 }

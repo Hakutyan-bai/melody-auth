@@ -5,7 +5,7 @@ const ClientTypeLabel = ({ type }: {
 }) => {
   return (
     <div className='flex items-center'>
-      <Badge>{type.toUpperCase()}</Badge>
+      <Badge variant='secondary'>{type.toUpperCase()}</Badge>
     </div>
   )
 }

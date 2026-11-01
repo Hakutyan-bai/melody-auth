@@ -4,7 +4,7 @@ import { getMessages } from 'next-intl/server'
 import { Metadata } from 'next'
 import Setup from 'app/Setup'
 
-export const metadata: Metadata = { title: 'Melody Auth Admin Panel' }
+export const metadata: Metadata = { title: 'SakuraInk Auth Admin Panel' }
 
 export default async function RootLayout ({
   children, params,
